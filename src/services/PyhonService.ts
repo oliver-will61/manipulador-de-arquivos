@@ -35,7 +35,7 @@ export class PythonService {
 
             // Limpa o arquivo temporário
             fs.unlinkSync(req.file!.path);
-
+            console.log(resposta.data)
             return res.json(resposta.data);
 
         } catch (error: any) {

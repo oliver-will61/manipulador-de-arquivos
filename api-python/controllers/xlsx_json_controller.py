@@ -1,7 +1,4 @@
-from fastapi import FastAPI, UploadFile, File, Header, HTTPException
-from fastapi.middleware.cors import CORSMiddleware
-from typing import Optional
-
+from fastapi import HTTPException
 from models.Gerenciador_xlsx import Gerenciador_xlsx
 
 async def xlsx_json_controller(arquivo):
@@ -9,19 +6,17 @@ async def xlsx_json_controller(arquivo):
             
             print(f"📥 Arquivo Recebido no Python: {arquivo.filename}")
 
-            # Lê o conteúdo
+            # converte para em um formato de bytes que o Python possa ler
             conteudo = await arquivo.read()
-            print(f"✅ Conteúdo lido: {len(conteudo)} bytes")
 
-            # abre o arquivo xlsx
+            # abre o arquivo em xlsx e o converte para JSON
             gerenciador =  Gerenciador_xlsx(conteudo)
-            gerenciador.converte_json()
+            arquivo_convertido = gerenciador.converte_json()
             
             return {
                 "status": "sucesso",
-                "mensagem": f"Arquivo {arquivo.filename} recebido com sucesso!",
-                #"tamanho": len(conteudo),
-                "tipo": arquivo.content_type
+                "mensagem": "Arquivo convertido com sucesso!",
+                "arquivoConvertido": arquivo_convertido 
             }
         
         except Exception as e:

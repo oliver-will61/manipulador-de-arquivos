@@ -1,6 +1,5 @@
-from fastapi import FastAPI, UploadFile, File, Header, HTTPException
+from fastapi import FastAPI, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
-from typing import Optional
 from controllers.xlsx_json_controller import xlsx_json_controller
 
 import uvicorn
@@ -26,7 +25,7 @@ app.add_middleware(
 async def processaArquivo(arquivo: UploadFile = File(...)):
 
     #chama controller
-    await xlsx_json_controller(arquivo)
+    return await xlsx_json_controller(arquivo)
 
 if __name__ == "__main__":
     uvicorn.run(
