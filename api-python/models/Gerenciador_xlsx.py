@@ -19,9 +19,10 @@ class Gerenciador_xlsx:
             #converte o excel em json 
             # 'records' orienta a criação de uma lista de objetos JSON
             # 'indent' adiciona indentação para melhor legibilidade
+            # salva o conteudo do excel no json_buffer
             df.to_json(json_buffer, orient='records', indent=4, force_ascii=False)  
 
-            # Pega o conteúdo do buffer
+            # Pega o conteúdo do json_buffer, transformando a variavel no tipo string
             arquivo_json = json_buffer.getvalue()
             json_buffer.close
 
@@ -29,5 +30,5 @@ class Gerenciador_xlsx:
             # with open('teste de arquivo', 'w', encoding='utf-8') as f:
             #       f.write(arquivo_json)
             print(arquivo_json)
-            
+
             return arquivo_json  
