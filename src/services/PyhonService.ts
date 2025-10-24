@@ -29,14 +29,20 @@ export class PythonService {
                     headers: {
                         ...formData.getHeaders()
                     },
-                    timeout: 30000
+                    timeout: 30000,
+                    responseType: 'arraybuffer' //definimos o tipo do response
                 }
             );
 
             // Limpa o arquivo temporário
             fs.unlinkSync(req.file!.path);
-            console.log(resposta.data)
-            return res.json(resposta.data);
+
+            console.log("Resposta do Python: ", resposta.data)
+
+            // Define os headers para forçar download no cliente final
+            res.setHeader('Content-Type', 'application/json');
+            res.setHeader('Content-Disposition', resposta.headers['content-disposition'] || `attachment; filename="${req.file!.originalname}.json"`)
+            return res.send(resposta.data)
 
         } catch (error: any) {
             console.error('❌ Erro detalhado:', {
