@@ -18,7 +18,8 @@ async def xlsx_json_controller(arquivo):
             #retorna o arquivo como resposta para donwload
 
             resposta = Response(
-                content=json.dumps(arquivo_convertido, ensure_ascii=False, indent=2),
+                content= arquivo_convertido,
+                #envia a respota em json
                 media_type = "application/json",
                 headers={
                         "Content-Disposition": f"attachment; filename={arquivo.filename}",

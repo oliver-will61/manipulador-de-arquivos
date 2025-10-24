@@ -24,22 +24,40 @@
             try {
 
                 const arquivo = arquivoInput.files[0]
-
-                console.log(arquivo)
                 
                 const formData = new FormData();
                 formData.append('arquivo', arquivo);
-
-                console.log(formData);
 
                 const response = await fetch('http://localhost:3000/xlsx-json', {
                     method: "POST",
                     body: formData
                 });
 
-                const result = await response.json();
+                //const result = await response.json();
 
-                console.log('Resposta do servidor:', result);
+                console.log('Resposta do servidor:', response);
+
+                console.log('Status da resposta:', response.status);
+                console.log('Headers da resposta:', response.headers);
+
+                // obtem os dados
+                const jsonText = await response.text();
+
+                // Cria o Blob a partir do texto, especificando o tipo correto
+                const blob = new Blob([jsonText], {
+                    type: 'application/json; charset=utf-8' 
+                })
+
+                //cria URL para download
+                const url = window.URL.createObjectURL(blob)
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = 'arquivo_convertido.json';
+                document.body.appendChild(link)
+                link.click();
+                document.body.removeChild(link)
+                window.URL.revokeObjectURL(url)
+
 
             } catch (error) {
                 console.error(`Error no servidor:`, error)
